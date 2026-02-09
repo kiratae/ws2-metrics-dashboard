@@ -1,0 +1,175 @@
+:root {
+  --bg: #0b1020;
+  --card: #121a33;
+  --text: #e7ebff;
+  --muted: #a8b0d6;
+  --border: rgba(255,255,255,.12);
+  --inputBg: rgba(255,255,255,.04);
+  --btnBg: rgba(96,165,250,.18);
+  --btnBorder: rgba(96,165,250,.35);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #0c1330;
+  --muted: #4b5563;
+  --border: rgba(15, 23, 42, .12);
+  --inputBg: rgba(15, 23, 42, .04);
+  --btnBg: rgba(37, 99, 235, .14);
+  --btnBorder: rgba(37, 99, 235, .28);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  background: radial-gradient(1200px 800px at 20% 10%, rgba(96, 165, 250, .18), transparent 60%),
+              radial-gradient(1000px 700px at 80% 30%, rgba(167, 139, 250, .14), transparent 60%),
+              var(--bg);
+  color: var(--text);
+}
+
+a { color: inherit; text-decoration: none; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+.header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom: 18px; }
+.h1 { font-size: 20px; font-weight: 700; letter-spacing: .2px; }
+.badge { font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+
+.grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 900px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+.card {
+  background: color-mix(in oklab, var(--card), transparent 0%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+
+.card h2 { margin: 0 0 10px; font-size: 14px; color: var(--muted); font-weight: 600; }
+.row { display:flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.field { display:flex; flex-direction: column; gap: 6px; min-width: 180px; }
+label { font-size: 12px; color: var(--muted); }
+
+input, select, button {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--inputBg);
+  color: var(--text);
+  outline: none;
+}
+
+/* Make dropdowns look consistent */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 34px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%),
+    linear-gradient(to right, transparent, transparent);
+  background-position:
+    calc(100% - 18px) 14px,
+    calc(100% - 13px) 14px,
+    calc(100% - 2.5em) 0.3em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.9em;
+  background-repeat: no-repeat;
+}
+
+select:focus, input:focus {
+  border-color: color-mix(in oklab, var(--btnBorder), white 10%);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--btnBorder), transparent 60%);
+}
+
+/* Critical: option background so it doesn't look "weird" in dark mode */
+select option {
+  background: var(--card);
+  color: var(--text);
+}
+
+button { cursor: pointer; background: var(--btnBg); border-color: var(--btnBorder); }
+button:hover { background: color-mix(in oklab, var(--btnBg), white 10%); }
+
+.kpis { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+@media (min-width: 900px) { .kpis { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+
+.kpi { padding: 12px; border-radius: 14px; border: 1px solid var(--border); background: color-mix(in oklab, var(--card), transparent 6%); }
+.kpi .k { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.kpi .v { font-size: 18px; font-weight: 700; }
+.small { font-size: 12px; color: var(--muted); }
+.footerNote { margin-top: 12px; font-size: 12px; color: var(--muted); }
+
+.iconBtn {
+  width: 36px;
+  min-width: 36px;
+  padding: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 0;
+}
+
+/* Chart text clarity */
+.recharts-text, .recharts-cartesian-axis-tick-value { 
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--text);
+  opacity: 0.92;
+}
+.recharts-legend-item-text { 
+  color: var(--text) !important;
+  font-weight: 600;
+  opacity: 0.92;
+}
+.recharts-tooltip-wrapper { outline: none; }
+
+.chartTooltip {
+  background: color-mix(in oklab, var(--card), black 10%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+  color: var(--text);
+  min-width: 160px;
+  backdrop-filter: blur(8px);
+}
+.chartTooltip .t {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.chartTooltip .row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  padding: 3px 0;
+  flex-wrap: nowrap;
+}
+.chartTooltip .k {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: .95;
+}
+.chartTooltip .v {
+  font-size: 12px;
+  font-weight: 800;
+  opacity: .95;
+}
