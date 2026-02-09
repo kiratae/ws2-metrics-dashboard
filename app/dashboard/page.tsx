@@ -274,11 +274,11 @@ export default function DashboardPage() {
       <div className="grid">
         <div className="card">
           <h2>Requests (stacked by status) + Started</h2>
-          <RequestsChart data={reqData} />
+          <RequestsChart data={reqData} granularity={reqGran} />
         </div>
         <div className="card">
           <h2>Latency (avg ms by statusGroup)</h2>
-          <LatencyChart data={latData} />
+          <LatencyChart data={latData} granularity={latGran} />
         </div>
       </div>
 
