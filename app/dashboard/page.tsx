@@ -26,9 +26,35 @@ function pct(n: number) {
   return (n * 100).toFixed(2) + "%";
 }
 
+type Preset =
+  | "custom"
+  | "15m"
+  | "1h"
+  | "6h"
+  | "24h"
+  | "7d";
+
+function applyPreset(p: Preset) {
+  const now = new Date();
+  const to = isoLocal(now);
+
+  const fromDate = new Date(now);
+  switch (p) {
+    case "15m": fromDate.setMinutes(now.getMinutes() - 15); break;
+    case "1h":  fromDate.setHours(now.getHours() - 1); break;
+    case "6h":  fromDate.setHours(now.getHours() - 6); break;
+    case "24h": fromDate.setHours(now.getHours() - 24); break;
+    case "7d":  fromDate.setDate(now.getDate() - 7); break;
+    default:    break;
+  }
+
+  return { from: isoLocal(fromDate), to };
+}
+
 export default function DashboardPage() {
   const apiBase = process.env.NEXT_PUBLIC_METRICS_API_BASE || "http://localhost:5000";
 
+  const [preset, setPreset] = useState<Preset>("6h");
   const { from: dFrom, to: dTo } = useMemo(defaultRange, []);
   const [from, setFrom] = useState<string>(isoLocal(dFrom));
   const [to, setTo] = useState<string>(isoLocal(dTo));
@@ -101,7 +127,12 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    load();
+    const r = applyPreset("6h");
+    setFrom(r.from);
+    setTo(r.to);
+    setPreset("6h");
+    // แล้วค่อย load หลัง set state (วิธีง่าย: setTimeout 0)
+    setTimeout(() => { void load(); }, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -109,9 +140,9 @@ export default function DashboardPage() {
     <div className="container">
       <div className="header">
         <div>
-          <div className="h1">WS Metrics Dashboard</div>
-          <div className="small">
-            API base: <span className="badge">{apiBase}</span>
+          <div className="h1">WS2 Metrics Dashboard</div>
+          <div className="small" style={{ marginTop: 8 }}>
+            API base: <span className="badge" style={{ padding: "4px 8px" }}>{apiBase}</span>
           </div>
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -125,12 +156,64 @@ export default function DashboardPage() {
       <div className="card" style={{ marginBottom: 16 }}>
         <div className="row">
           <div className="field">
-            <label>From (local)</label>
-            <input value={from} onChange={(e) => setFrom(e.target.value)} />
+            <label>Range</label>
+            <select
+              value={preset}
+              onChange={(e) => {
+                const p = e.target.value as Preset;
+                setPreset(p);
+                if (p !== "custom") {
+                  const r = applyPreset(p);
+                  setFrom(r.from);
+                  setTo(r.to);
+                }
+              }}
+            >
+              <option value="custom">custom</option>
+              <option value="15m">last 15m</option>
+              <option value="1h">last 1h</option>
+              <option value="6h">last 6h</option>
+              <option value="24h">last 24h</option>
+              <option value="7d">last 7d</option>
+            </select>
+          </div>
+
+          <div className="field">
+            <label>Now</label>
+            <button
+              type="button"
+              onClick={() => {
+                const now = isoLocal(new Date());
+                setTo(now);
+              }}
+            >
+              Set To = Now
+            </button>
           </div>
           <div className="field">
+            <label>From (local)</label>
+            <input
+              type="datetime-local"
+              step={60}
+              value={from.slice(0, 16)}
+              onChange={(e) => {
+                setPreset("custom");
+                setFrom(e.target.value + ":00");
+              }}
+            />
+          </div>
+
+          <div className="field">
             <label>To (local)</label>
-            <input value={to} onChange={(e) => setTo(e.target.value)} />
+            <input
+              type="datetime-local"
+              step={60}
+              value={to.slice(0, 16)}
+              onChange={(e) => {
+                setPreset("custom");
+                setTo(e.target.value + ":00");
+              }}
+            />
           </div>
           <div className="field">
             <label>Granularity</label>
@@ -200,7 +283,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="footerNote">
-        Set <code>NEXT_PUBLIC_METRICS_API_BASE</code> in Vercel env. Basic-auth uses <code>DASH_USER</code>/<code>DASH_PASS</code>.
+        Set <code>NEXT_PUBLIC_METRICS_API_BASE</code> and <code>NEXT_PUBLIC_METRICS_ACCESS_TOKEN</code> in Vercel env. Basic-auth uses <code>DASH_USER</code>/<code>DASH_PASS</code>.
       </div>
     </div>
   );
