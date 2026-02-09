@@ -105,6 +105,7 @@ select option {
 
 button { cursor: pointer; background: var(--btnBg); border-color: var(--btnBorder); }
 button:hover { background: color-mix(in oklab, var(--btnBg), white 10%); }
+button:disabled { cursor: not-allowed; color: color-mix(in oklab, var(--text), black 20%); background: color-mix(in oklab, var(--btnBg), black 20%); }
 
 .kpis { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
 @media (min-width: 900px) { .kpis { grid-template-columns: repeat(4, minmax(0,1fr)); } }
