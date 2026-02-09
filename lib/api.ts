@@ -49,6 +49,7 @@ export async function fetchRequestsTimeseries(args: {
   formTypeId?: string;
   signal?: AbortSignal;
 }): Promise<RequestsTimeseriesResponse> {
+  const access_token = process.env.NEXT_PUBLIC_METRICS_ACCESS_TOKEN || "";
   const qs = buildQuery({
     from: args.from,
     to: args.to,
@@ -57,7 +58,13 @@ export async function fetchRequestsTimeseries(args: {
     formTypeId: args.formTypeId ?? null,
   });
   const url = `${args.apiBase}/api/metrics/timeseries/requests?${qs}`;
-  const res = await fetch(url, { signal: args.signal, cache: "no-store" });
+  const res = await fetch(url, { 
+    signal: args.signal, 
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
   if (!res.ok) throw new Error(`requests endpoint failed: ${res.status}`);
   return res.json();
 }
@@ -71,6 +78,7 @@ export async function fetchLatencyTimeseries(args: {
   formTypeId?: string;
   signal?: AbortSignal;
 }): Promise<LatencyTimeseriesResponse> {
+  const access_token = process.env.NEXT_PUBLIC_METRICS_ACCESS_TOKEN || "";
   const qs = buildQuery({
     from: args.from,
     to: args.to,
@@ -79,7 +87,13 @@ export async function fetchLatencyTimeseries(args: {
     formTypeId: args.formTypeId ?? null,
   });
   const url = `${args.apiBase}/api/metrics/timeseries/latency?${qs}`;
-  const res = await fetch(url, { signal: args.signal, cache: "no-store" });
+  const res = await fetch(url, { 
+    signal: args.signal, 
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
   if (!res.ok) throw new Error(`latency endpoint failed: ${res.status}`);
   return res.json();
 }
