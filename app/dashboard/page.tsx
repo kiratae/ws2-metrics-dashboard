@@ -126,7 +126,15 @@ export default function DashboardPage() {
     return () => ac.abort();
   }
 
-  useEffect(() => {
+  
+async function logout() {
+  try {
+    await fetch("/api/auth/logout", { method: "POST" });
+  } finally {
+    window.location.href = "/login";
+  }
+}
+useEffect(() => {
     const r = applyPreset("6h");
     setFrom(r.from);
     setTo(r.to);
@@ -147,6 +155,7 @@ export default function DashboardPage() {
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           <ThemeToggle />
+          <button className="iconBtn" onClick={() => void logout()} title="Logout">↩︎</button>
           <div className="badge">
             requests: {reqGran} • latency: {latGran}
           </div>
@@ -274,11 +283,11 @@ export default function DashboardPage() {
       <div className="grid">
         <div className="card">
           <h2>Requests (stacked by status) + Started</h2>
-          <RequestsChart data={reqData} />
+          <RequestsChart data={reqData} granularity={reqGran} />
         </div>
         <div className="card">
           <h2>Latency (avg ms by statusGroup)</h2>
-          <LatencyChart data={latData} />
+          <LatencyChart data={latData} granularity={latGran} />
         </div>
       </div>
 
