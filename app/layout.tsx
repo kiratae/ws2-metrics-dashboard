@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "WS Metrics Dashboard",
+  title: "WS2 Metrics Dashboard",
   description: "Requests & latency dashboard for OPS_WS2 metrics",
 };
 
