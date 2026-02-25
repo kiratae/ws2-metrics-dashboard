@@ -91,10 +91,10 @@ export function RequestsChart({ data, granularity }: { data: any[]; granularity:
           <YAxis tick={{ fill: "var(--text)", fontSize: 12 }} />
           <Tooltip content={<CustomTooltip />} />
           <Legend wrapperStyle={{ color: "var(--text)" }} />
-          <Area type="monotone" dataKey="c2xx" stackId="1" name="2xx" />
-          <Area type="monotone" dataKey="c4xx" stackId="1" name="4xx" />
-          <Area type="monotone" dataKey="c5xx" stackId="1" name="5xx" />
-          <Line type="monotone" dataKey="started" name="Started" dot={false} strokeWidth={2} />
+          <Area type="monotone" dataKey="c2xx" stackId="1" name="2xx" stroke="var(--color-2xx)" fill="var(--color-2xx)" fillOpacity={0.4} />
+          <Area type="monotone" dataKey="c4xx" stackId="1" name="4xx" stroke="var(--color-4xx)" fill="var(--color-4xx)" fillOpacity={0.4} />
+          <Area type="monotone" dataKey="c5xx" stackId="1" name="5xx" stroke="var(--color-5xx)" fill="var(--color-5xx)" fillOpacity={0.4} />
+          <Line type="monotone" dataKey="started" name="Started" dot={false} strokeWidth={2} stroke="var(--color-started)" />
         </AreaChart>
       </ResponsiveContainer>
     </div>
@@ -118,10 +118,10 @@ export function LatencyChart({ data, granularity }: { data: any[]; granularity: 
           <YAxis tick={{ fill: "var(--text)", fontSize: 12 }} />
           <Tooltip content={<CustomTooltip />} />
           <Legend wrapperStyle={{ color: "var(--text)" }} />
-          <Line type="monotone" dataKey="avg2xxMs" name="Avg 2xx (ms)" dot={false} strokeWidth={2} />
-          <Line type="monotone" dataKey="avg4xxMs" name="Avg 4xx (ms)" dot={false} strokeWidth={2} />
-          <Line type="monotone" dataKey="avg5xxMs" name="Avg 5xx (ms)" dot={false} strokeWidth={2} />
-          <Line type="monotone" dataKey="avgAllMs" name="Avg All (ms)" dot={false} strokeWidth={3} />
+          <Line type="monotone" dataKey="avg2xxMs" name="Avg 2xx (ms)" dot={false} strokeWidth={2} stroke="var(--color-2xx)" />
+          <Line type="monotone" dataKey="avg4xxMs" name="Avg 4xx (ms)" dot={false} strokeWidth={2} stroke="var(--color-4xx)" />
+          <Line type="monotone" dataKey="avg5xxMs" name="Avg 5xx (ms)" dot={false} strokeWidth={2} stroke="var(--color-5xx)" />
+          <Line type="monotone" dataKey="avgAllMs" name="Avg All (ms)" dot={false} strokeWidth={3} stroke="var(--color-started)" />
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -8,6 +8,11 @@
   --btnBg: rgba(96,165,250,.18);
   --btnBorder: rgba(96,165,250,.35);
   color-scheme: dark;
+
+  --color-2xx: #10b981;
+  --color-4xx: #f59e0b;
+  --color-5xx: #ef4444;
+  --color-started: #3b82f6;
 }
 
 :root[data-theme="light"] {
